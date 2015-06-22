@@ -19,8 +19,10 @@ $app->get('/', function () use ($app) {
 
 $app->post('upload', 'SiteController@upload');
 
-$app->get('/api/version', function() {
-  return response()->json([
-    'version' => API_VERSION,
-  ]);
+$app->group(['namespace'=> 'App\Http\Controllers','prefix' => 'api'], function() use($app) {
+    $app->get('version', 'ApiController@version');
+    $app->get('time', 'ApiController@time');
+    $app->get('date', 'ApiController@date');
+    $app->get('land/render/{id}', 'ApiController@land_render');
+    $app->get('land/list', 'ApiController@land_list');
 });

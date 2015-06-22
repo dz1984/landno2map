@@ -25,6 +25,8 @@
       </form>
     </div>
 </div>
+
+<div id="map-canvas"></div>
 @stop
 
 @section('script')
