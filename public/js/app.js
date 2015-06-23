@@ -4,7 +4,7 @@
 
     $(this).ajaxSubmit(function(data) {
 
-      // TODO : rende the map
+      // TODO : render the map
       // 
       var map_id = 'map-canvas';
       var map_options = {
@@ -15,6 +15,13 @@
       var map_element = document.getElementById(map_id);
       var map_object = new google.maps.Map(map_element, map_options);
       var features = data.geo_json.features;
+
+      map_object.data.addListener("click", function(event) {
+        var feature = event.feature;
+        $.each(data.field_names, function(index, field) {
+          console.log(field, feature.getProperty(field));
+        });
+      });
 
       var center = {
         lat: -1,
@@ -35,7 +42,6 @@
       });
 
       map_object.setCenter(new google.maps.LatLng(center.lat, center.lng));
-      console.log(data);
     });
   });
 })();

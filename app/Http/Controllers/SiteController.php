@@ -7,6 +7,10 @@ use Illuminate\Http\Request;
 class SiteController extends Controller
 {
 
+  const CITY_FIELD_NAME = '縣市';
+  const ROAD_FIELD_NAME = '路段';
+  const LANDNO_FIELD_NAME = '段號';
+
   const API_URL = 'http://twland.ronny.tw/index/search';
   const UPLOAD_FILE_PATH = 'upload_files/csv/';
 
@@ -14,11 +18,13 @@ class SiteController extends Controller
 
   private $response_json = [
     'status' => 'fail',
+    'field_names' => [],
     'geo_json' => [],
     'msg' => ''
   ];
 
   private $record_list = [];
+  private $filed_name_list = [];
 
   public function upload(Request $request)
   {
@@ -49,24 +55,37 @@ class SiteController extends Controller
         "type"=>"FeatureCollection",
         "features" => []
       ];
+
       foreach($this->record_list as $record) {
-        $city_name = trim($record['市名']);
-        $road_name = trim($record['段名']);
-        $land_no = trim($record['地號']);
+        // TODO : throw an exception if appear undefined index.
+        // 
+        $city_name = trim($record[self::CITY_FIELD_NAME]);
+        $road_name = trim($record[self::ROAD_FIELD_NAME]);
+        $land_no = trim($record[self::LANDNO_FIELD_NAME]);
 
         $land_info = "$city_name,$road_name,$land_no";
 
-        // TODO : suppor the multiple rows
-        // 
         $api_url = $this->_generateAPIUrl($land_info);
 
         $content = file_get_contents($api_url);
         $feature_array = json_decode($content, TRUE);
-        $feature = $feature_array['features'];
-        $geo_json['features'] = array_merge($geo_json['features'] ,$feature);
+        $feature = $feature_array['features'][0];
+
+        // TODO : add the properties
+        //
+        foreach($this->field_name_list as $field_name) {
+          $feature['properties'][$field_name] = $record[$field_name];
+        }
+
+        $geo_json['features'][] = $feature;
+
+        // TODO : save the geo_json into db
+        //
       }
+
       $this->response_json['status'] = 'success';
       $this->response_json['geo_json'] = $geo_json;
+      $this->response_json['field_names'] = $this->field_name_list;
     }
 
     return response()->json($this->response_json);
@@ -84,7 +103,7 @@ class SiteController extends Controller
     $fp = fopen($file_name, 'r');
    
     if ( $fp !== FALSE) {
-      $field_name_list = fgetcsv($fp, 0, ",", "\"","\"");
+      $this->field_name_list = $field_name_list = fgetcsv($fp, 0, ",", "\"","\"");
       $field_count = count($field_name_list);
 
       while (($data = fgetcsv($fp, 0, ",", "\"","\"")) !== FALSE) {
