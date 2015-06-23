@@ -18,6 +18,9 @@
 
       map_object.data.addListener("click", function(event) {
         var feature = event.feature;
+
+        // TODO : show the information.
+        // 
         $.each(data.field_names, function(index, field) {
           console.log(field, feature.getProperty(field));
         });

@@ -73,9 +73,8 @@ class SiteController extends Controller
 
         // TODO : add the properties
         //
-        foreach($this->field_name_list as $field_name) {
-          $feature['properties'][$field_name] = $record[$field_name];
-        }
+
+        $feature['properties'] = array_merge($feature['properties'], $record);
 
         $geo_json['features'][] = $feature;
 
