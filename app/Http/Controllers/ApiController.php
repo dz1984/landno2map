@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Summary;
+use App\Detail;
 use Illuminate\Http\Request;
 
 class ApiController extends Controller
@@ -31,7 +33,8 @@ class ApiController extends Controller
   {
     // TODO : list the already search of csv files.
     //
-    $response_json = [];
+    $summary = Summary::all();
+    $response_json = $summary;
 
     return response()->json($response_json);
   }
@@ -40,6 +43,7 @@ class ApiController extends Controller
   {
     // TODO : search the record via id and render it.
     //
+    $detail = Detail::all();
     $response_json = [
       'status' => 'fail',
       'msg' => 'Error'
