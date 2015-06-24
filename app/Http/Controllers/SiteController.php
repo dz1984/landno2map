@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-
 use App\Summary;
 use App\Detail;
 use Illuminate\Http\Request;
@@ -83,7 +82,11 @@ class SiteController extends Controller
       $api_url = $this->_generateAPIUrl($land_info);
 
       $content = file_get_contents($api_url);
+
       $feature_array = json_decode($content, TRUE);
+
+      // TODO : handle the Undefined index ErrorException
+      //
       $feature = $feature_array['features'][0];
 
       // TODO : add the properties
@@ -111,7 +114,7 @@ class SiteController extends Controller
 
   private function _generateAPIUrl($info)
   {
-    $api_url = self::API_URL.'?lands[]='.$info;
+    $api_url = self::API_URL.'?lands[]='.urlencode($info);
 
     return $api_url;
   }
