@@ -81,19 +81,10 @@ class SiteController extends Controller
     $summary->save();
 
     foreach($this->record_list as $record) {
-      // TODO : throw an exception if appear undefined index.
-      // 
-      $city_name = trim($record[self::CITY_FIELD_NAME]);
-      $road_name = trim($record[self::ROAD_FIELD_NAME]);
-      $land_no = trim($record[self::LANDNO_FIELD_NAME]);
 
-      $land_info = "$city_name,$road_name,$land_no";
+      $land_info_str = $this->_generateLandInfoStr($record);
 
-      $api_url = $this->_generateAPIUrl($land_info);
-
-      $content = file_get_contents($api_url);
-
-      $feature_array = json_decode($content, TRUE);
+      $feature_array = $this->_queryFeature($land_info_str);
 
       // TODO : handle the Undefined index ErrorException
       //
@@ -120,6 +111,30 @@ class SiteController extends Controller
     $this->response_json['field_names'] = $this->field_name_list;
 
     return response()->json($this->response_json);
+  }
+
+  private function _generateLandInfoStr($record)
+  {
+    // TODO : throw an exception if appear undefined index.
+    // 
+    $city_name = trim($record[self::CITY_FIELD_NAME]);
+    $road_name = trim($record[self::ROAD_FIELD_NAME]);
+    $land_no = trim($record[self::LANDNO_FIELD_NAME]);
+
+    $land_info_str = "$city_name,$road_name,$land_no";
+
+    return $land_info_str;
+  }
+
+  private function _queryFeature($land_info_str)
+  {
+    $api_url = $this->_generateAPIUrl($land_info);
+
+    $content = file_get_contents($api_url);
+
+    $feature_array = json_decode($content, TRUE);
+
+    return $feature_array;
   }
 
   private function _generateAPIUrl($info)
