@@ -103,11 +103,11 @@ class SiteController extends Controller
       $detail->geo_json = json_encode($feature);
       $detail->properties = serialize($record);
       $detail->save();
-
-      $this->response_json['status'] = 'success';
-      $this->response_json['geo_json'] = $geo_json;
-      $this->response_json['field_names'] = $this->field_name_list;
     }
+
+    $this->response_json['status'] = 'success';
+    $this->response_json['geo_json'] = $geo_json;
+    $this->response_json['field_names'] = $this->field_name_list;
 
     return response()->json($this->response_json);
   }
