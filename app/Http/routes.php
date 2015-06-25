@@ -13,10 +13,8 @@
 
 const API_VERSION = '0.0.1';
 
-$app->get('/', function () use ($app) {
-    return view('index');
-});
-
+$app->get('/', 'SiteController@index');
+$app->get('/history', 'SiteController@history');
 $app->post('upload', 'SiteController@upload');
 
 $app->group(['namespace'=> 'App\Http\Controllers','prefix' => 'api'], function() use($app) {

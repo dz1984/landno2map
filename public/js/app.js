@@ -21,9 +21,15 @@
 
         // TODO : show the information.
         // 
+        var land_info = [];
+
         $.each(data.field_names, function(index, field) {
-          console.log(field, feature.getProperty(field));
+          land_info.push({k: field, v: feature.getProperty(field)});
         });
+
+        var content_compiled = _.template($('#content-tpl').html());
+        var content = content_compiled({land_info:land_info});
+        $(content).modal();
       });
 
       var center = {

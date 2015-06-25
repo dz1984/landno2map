@@ -28,6 +28,16 @@ class SiteController extends Controller
   private $record_list = [];
   private $field_name_list = [];
 
+  public function index()
+  {
+    return view('index');
+  }
+
+  public function history()
+  {
+    return view('history');
+  }
+
   public function upload(Request $request)
   {
 
