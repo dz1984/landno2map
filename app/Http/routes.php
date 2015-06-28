@@ -11,8 +11,6 @@
 |
 */
 
-const API_VERSION = '0.0.1';
-
 $app->get('/', 'SiteController@index');
 $app->get('/history', 'SiteController@history');
 $app->post('upload', 'SiteController@upload');

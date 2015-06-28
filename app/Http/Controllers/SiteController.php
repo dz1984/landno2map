@@ -128,7 +128,7 @@ class SiteController extends Controller
 
   private function _queryFeature($land_info_str)
   {
-    $api_url = $this->_generateAPIUrl($land_info);
+    $api_url = $this->_generateAPIUrl($land_info_str);
 
     $content = file_get_contents($api_url);
 

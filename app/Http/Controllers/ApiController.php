@@ -8,10 +8,12 @@ use Illuminate\Http\Request;
 
 class ApiController extends Controller
 {
+  const API_VERSION = '0.0.1';
+  
   public function version()
   {
     return response()->json([
-      'version' => API_VERSION,
+      'version' => self::API_VERSION,
     ]);
   }
 
@@ -43,13 +45,14 @@ class ApiController extends Controller
   {
     // TODO : search the record via id and render it.
     //
-    $detail = Detail::all();
+
     $response_json = [
       'status' => 'fail',
       'msg' => 'Error'
     ];
 
     if (isset($id)) {
+      $detail = Detail::all();
       $response_json = [
         'id' => $id,
         'geo_json' => []
