@@ -20,5 +20,6 @@ $app->group(['namespace'=> 'App\Http\Controllers','prefix' => 'api'], function()
     $app->get('time', 'ApiController@time');
     $app->get('date', 'ApiController@date');
     $app->get('land/render/{id}', 'ApiController@land_render');
+    $app->get('land/download/{id}', 'ApiController@land_download');
     $app->get('land/list', 'ApiController@land_list');
 });

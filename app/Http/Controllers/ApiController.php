@@ -43,22 +43,47 @@ class ApiController extends Controller
 
   public function land_render($id)
   {
+    $response_json = $this->_find_land($id);
+
+    return response()->json($response_json);
+  }
+
+  public function land_download($id)
+  {
+    $response_json = $this->_find_land($id);
+
+    $status = 200;
+    $headers = ['Content-disposition' => 'attachment'];
+
+    return response()->json($response_json, $status, $headers);
+  }
+
+  private function _find_land($id)
+  {
     // TODO : search the record via id and render it.
     //
 
-    $response_json = [
-      'status' => 'fail',
-      'msg' => 'Error'
-    ];
-
-    if (isset($id)) {
-      $detail = Detail::all();
-      $response_json = [
-        'id' => $id,
-        'geo_json' => []
+    if (isset($id) === FALSE)
+      return [
+        'status' => 'fail',
+        'msg' => 'ID is empty.'
       ];
-    }
 
-    return response()->json($response_json);
+    $detail = Detail::find($id);
+
+    if ($detail == null)
+      return [
+        'status' => 'fail',
+        'msg' => 'Could not find any record.'
+      ];
+
+    $summary = Summary::where('id', $id)->increment("query_count");
+
+    return [
+      'status' => 'success',
+      'msg' => 'done',
+      'id' => $id,
+      'geo_json' => $detail
+    ];
   }
 }
