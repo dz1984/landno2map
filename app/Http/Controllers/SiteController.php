@@ -47,6 +47,7 @@ class SiteController extends Controller
     $target_path = self::UPLOAD_FILE_PATH;
 
     if (FALSE == $request->hasFile('land_csv_file')) {
+      $this->response_json['msg'] = 'Could not find any upload file.';
       return response()->json($this->response_json);
     }
 
@@ -68,6 +69,7 @@ class SiteController extends Controller
     // TODO : generate GeoJson
     //
     if (FALSE == $this->was_parse_csv) {
+      $this->response_json['msg'] = 'Could not parse the csv file.';
       return response()->json($this->response_json);
     }
     $geo_json = [

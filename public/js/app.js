@@ -27,9 +27,9 @@
           land_info.push({k: field, v: feature.getProperty(field)});
         });
 
-        var content_compiled = _.template($('#content-tpl').html());
+        var content_compiled = _.template($('#content-tpl').text());
         var content = content_compiled({land_info:land_info});
-        $(content).modal();
+        $(content).modal({backdrop: false});
       });
 
       var center = {

@@ -13,7 +13,7 @@
 
 $app->get('/', 'SiteController@index');
 $app->get('/history', 'SiteController@history');
-$app->post('upload', 'SiteController@upload');
+$app->post('/upload', 'SiteController@upload');
 
 $app->group(['namespace'=> 'App\Http\Controllers','prefix' => 'api'], function() use($app) {
     $app->get('version', 'ApiController@version');
