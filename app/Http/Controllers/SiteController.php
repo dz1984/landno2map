@@ -41,35 +41,32 @@ class SiteController extends Controller
   public function upload(Request $request)
   {
 
-    // TODO : handle the csv file and make GeoJSON.
-    // 
+    // handle the csv file and make GeoJSON.
     $unique_hash_code = md5(rand());
     $target_path = self::UPLOAD_FILE_PATH;
 
     if (FALSE == $request->hasFile('land_csv_file')) {
-      $this->response_json['msg'] = 'Could not find any upload file.';
+      $this->response_json['msg'] = '找不到上傳檔案，在重新上傳一次！！！';
       return response()->json($this->response_json);
     }
 
 
     $upload_file = $request->file('land_csv_file');
 
-    // TODO : check the file is valid.
+    // check the file is valid.
     $ext_file_name = $upload_file->getClientOriginalExtension();
     $new_file_name = "$unique_hash_code.$ext_file_name";
     $upload_file->move($target_path, $new_file_name);
     
 
-    // TODO : parse the csv file
-    //
+    // parse the csv file
     $full_new_file_name = $target_path.$new_file_name;
 
     $this->was_parse_csv = $this->_readCsvFile($full_new_file_name);
 
-    // TODO : generate GeoJson
-    //
+    // generate GeoJson
     if (FALSE == $this->was_parse_csv) {
-      $this->response_json['msg'] = 'Could not parse the csv file.';
+      $this->response_json['msg'] = '好像沒辦法解析檔案喔！檢查過後再重新上傳一次！！！';
       return response()->json($this->response_json);
     }
     $geo_json = [
@@ -82,25 +79,23 @@ class SiteController extends Controller
     $summary->fields = serialize($this->field_name_list);
     $summary->save();
 
+    $land_id = $summary->id;
+
     foreach($this->record_list as $record) {
 
       $land_info_str = $this->_generateLandInfoStr($record);
 
       $feature_array = $this->_queryFeature($land_info_str);
 
-      // TODO : handle the Undefined index ErrorException
-      //
+      // handle the Undefined index ErrorException
       $feature = $feature_array['features'][0];
 
-      // TODO : add the properties
-      //
-
+      // add the properties
       $feature['properties'] = array_merge($feature['properties'], $record);
 
       $geo_json['features'][] = $feature;
 
-      // TODO : save the geo_json into db
-      //
+      // save the geo_json into db
       $detail = new Detail;
       $detail->summary_id = $summary->id;
       $detail->geo_json = json_encode($feature);
@@ -108,6 +103,7 @@ class SiteController extends Controller
       $detail->save();
     }
 
+    $this->response_json['land_id'] = $land_id;
     $this->response_json['status'] = 'success';
     $this->response_json['geo_json'] = $geo_json;
     $this->response_json['field_names'] = $this->field_name_list;
@@ -118,7 +114,8 @@ class SiteController extends Controller
   private function _generateLandInfoStr($record)
   {
     // TODO : throw an exception if appear undefined index.
-    // 
+    //
+
     $city_name = trim($record[self::CITY_FIELD_NAME]);
     $road_name = trim($record[self::ROAD_FIELD_NAME]);
     $land_no = trim($record[self::LANDNO_FIELD_NAME]);

@@ -24,6 +24,14 @@
           </fieldset>
       </form>
     </div>
+    <div id="download_geojson" class="panel-footer">
+      <a href="/api/land/download/">下載 GeoJSON</a>
+    </div>
+</div>
+
+<div id="info_msg" class="alert alert-dismissable alert-danger">
+    <button type="button" class="close" data-dismiss="alert">×</button>
+    <p></p>
 </div>
 
 <div id="map-canvas"></div>
