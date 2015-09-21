@@ -69,21 +69,42 @@ class ApiController extends Controller
         'msg' => 'ID is empty.'
       ];
 
-    $detail = Detail::find($id);
+    $summary = Summary::find($id);
 
-    if ($detail == null)
+    if ($summary == null)
+      return [
+        'status' => 'fail',
+        'msg' => 'Could not find out any records.'
+      ];
+
+    $field_name_list = unserialize($summary->fields);
+    $summary->increment("query_count");
+
+    $details = Detail::where('summary_id', $id)->get();
+
+    if ($details == null)
       return [
         'status' => 'fail',
         'msg' => 'Could not find any record.'
       ];
 
-    $summary = Summary::where('id', $id)->increment("query_count");
+    $geo_json_list = [];
+
+    foreach($details as $detail) {
+      $geo_json_list[] = $detail->geo_json;
+    }
+
+    $geo_json = [
+      "type" => "FeatureCollection",
+      "features" => $geo_json_list
+    ];
 
     return [
       'status' => 'success',
       'msg' => 'done',
       'id' => $id,
-      'geo_json' => $detail
+      'field_names' => $field_name_list,
+      'geo_json' => $geo_json
     ];
   }
 }
