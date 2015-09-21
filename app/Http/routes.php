@@ -14,6 +14,7 @@
 $app->get('/', 'SiteController@index');
 $app->get('/history', 'SiteController@history');
 $app->post('/upload', 'SiteController@upload');
+$app->get('/render/{id}', 'SiteController@render');
 
 $app->group(['namespace'=> 'App\Http\Controllers','prefix' => 'api'], function() use($app) {
     $app->get('version', 'ApiController@version');

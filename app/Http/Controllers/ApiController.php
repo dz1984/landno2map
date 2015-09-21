@@ -88,16 +88,16 @@ class ApiController extends Controller
         'msg' => 'Could not find any record.'
       ];
 
-    $geo_json_list = [];
-
-    foreach($details as $detail) {
-      $geo_json_list[] = $detail->geo_json;
-    }
-
     $geo_json = [
       "type" => "FeatureCollection",
-      "features" => $geo_json_list
+      "features" => []
     ];
+
+    foreach($details as $detail) {
+      $geo_json['features'][] = json_decode($detail->geo_json);
+    }
+
+
 
     return [
       'status' => 'success',

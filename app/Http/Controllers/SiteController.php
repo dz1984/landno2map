@@ -35,7 +35,15 @@ class SiteController extends Controller
 
   public function history()
   {
-    return view('history');
+    $summaries = Summary::orderBy('id')->get();
+
+
+    return view('history')->with('summaries', $summaries);
+  }
+
+  public function render()
+  {
+    return view('render')->with('id', '66');
   }
 
   public function upload(Request $request)
