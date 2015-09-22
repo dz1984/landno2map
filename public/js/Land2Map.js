@@ -22,7 +22,7 @@
 
     exports.render = function(data) {
         var map_element = document.getElementById(exports.map_id);
-        var map_object = new google.maps.Map(map_element, exports.map_options);
+        var map_object = new google.maps.Map(map_element, exports.map_option);
         var features = data.geo_json.features;
 
         map_object.data.addListener("click", function(event) {

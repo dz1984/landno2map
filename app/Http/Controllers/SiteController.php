@@ -41,9 +41,10 @@ class SiteController extends Controller
     return view('history')->with('summaries', $summaries);
   }
 
-  public function render()
+  public function render($id)
   {
-    return view('render')->with('id', '66');
+    $data = ['land_id' => $id];
+    return view('render', $data);
   }
 
   public function upload(Request $request)

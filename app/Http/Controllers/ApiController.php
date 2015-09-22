@@ -60,9 +60,6 @@ class ApiController extends Controller
 
   private function _find_land($id)
   {
-    // TODO : search the record via id and render it.
-    //
-
     if (isset($id) === FALSE)
       return [
         'status' => 'fail',
@@ -96,8 +93,6 @@ class ApiController extends Controller
     foreach($details as $detail) {
       $geo_json['features'][] = json_decode($detail->geo_json);
     }
-
-
 
     return [
       'status' => 'success',
