@@ -20,6 +20,9 @@
         }
     };
 
+    /**
+     *  render the map
+     */
     exports.render = function(data) {
         var map_element = document.getElementById(exports.map_id);
         var map_object = new google.maps.Map(map_element, exports.map_option);

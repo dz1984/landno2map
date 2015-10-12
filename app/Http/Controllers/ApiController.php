@@ -33,8 +33,7 @@ class ApiController extends Controller
 
   public function land_list()
   {
-    // TODO : list the already search of csv files.
-    //
+    // list the already search of csv files.
     $summary = Summary::all();
     $response_json = $summary;
 

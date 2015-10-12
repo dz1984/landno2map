@@ -1,10 +1,12 @@
 (function(){
+  "use strict";
+
   var jq_info_msg = $('#info_msg');
-  var jq_download_gejson = $('#download_geojson');
+  var jq_download_geojson = $('#download_geojson');
 
   // initial 
   jq_info_msg.hide();
-  jq_download_gejson.hide();
+  jq_download_geojson.hide();
 
   $('#land_csv_upload_form').submit(function(e) {
     e.preventDefault();
@@ -22,17 +24,17 @@
         setTimeout(function(){
           jq_info_msg.fadeOut();
         }, 3000);
+
         return true;
       }
 
-      // TODO : dispaly the export data link
-      //
+      // dispaly the export data link
 
       var land_id = data.land_id;
       var download_link = '/api/land/download/' + land_id;
 
-      jq_download_gejson.find('a').attr('href',download_link);
-      jq_download_gejson.fadeIn();
+      jq_download_geojson.find('a').attr('href',download_link);
+      jq_download_geojson.fadeIn();
 
       // render the map
       Land2Map.render(data);
