@@ -8,11 +8,11 @@
 
 ## Configuration
 
-1. copy the env and setting your database config.
++ copy the env and setting your database config.
 
 `cp .env.example .env`
 
-2. setup the database schema.
++ setup the database schema.
 
 `php artisan migrate`
 
